@@ -5,5 +5,5 @@
 int main()
 {
 	printf("PROJET GENIE LOGICIEL\n");
-	return EXIT_SUCCES;
+	return 0;
 }
