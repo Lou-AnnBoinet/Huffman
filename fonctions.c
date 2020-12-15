@@ -1,14 +1,7 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "fonctions.h"
-
-
-//partie 1
 
 void convertir_binaire(char caractere, char* conteneur)
 {
-    int var = 128;
+    int var = 128; //2 exposant 7
     for (int i = 0; i < 8 ; i++)
         {
             if ( caractere >= var )
@@ -31,5 +24,24 @@ void traduire_binaire_texte(char* input, char* traduction)
     FILE* texte2 = fopen("traduction.txt", "w");
     char temp = 0;
     char conteneur[9] ;
-    while ( (temp = getc(texte)) != EOF)
+    while ( (temp = fgetc(texte)) != EOF)
     {
+        convertir_binaire(temp, conteneur);
+        fprintf(texte2, "%s" , conteneur);
+    }
+    fclose(texte2);
+    fclose(texte);
+}
+
+
+int nombre_caracteres(char* fichier)
+{
+    FILE* texte = fopen(fichier, "r");
+    int comp = 0;
+    char temp = 0;
+    while ( (temp = getc(texte)) != EOF ){
+        comp++;
+    }
+    fclose(texte);
+    return comp;
+}
