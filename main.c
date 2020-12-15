@@ -4,10 +4,15 @@
 #include "fonctions.h"
 #include "fonctions_2.h"
 #include "fonctions_3.h"
+#include <time.h>
 
 
 int main()
 {
+    clock_t debut, fin;
+	  double duree;
+    debut = clock();
+
     char *dictionnaire[256];
     Arbre arbre;
 
@@ -16,38 +21,47 @@ int main()
     char *ftraduit = "traduction.txt";
     char *fcode = "output.txt";
     char *fdecode = "decodage.txt";
+    char *ftest = "test.txt";
 
 
-    printf("\n\n\n\n____________________\n");
+    printf("\n\n\n\t_________PROJET HUFFMAN___________\n\n");
 
     printf("Le nombre de caracteres dans le fichier source (%s) est : %d\n", fsource,nombre_caracteres(fsource));
 
     traduire_binaire_texte(fsource, ftraduit );
     int nbcartraduit=nombre_caracteres("traduction.txt");
-    printf("Le nombre de caracteres dans le fichier traduit (%s) est : %d\n", ftraduit,nbcartraduit);
+    printf("Le nombre de caracteres dans le fichier traduit (%s) est : %d\n\n", ftraduit,nbcartraduit);
 
-    printf("Calcule des occurences de caracteres dans le fichier %s\n",fsource);
+    printf("Calcul des occurrences de caracteres dans le fichier %s\n",fsource);
     Element* L = Liste_occurence_caractere(fsource);
 
-    //DEBUG afficher_liste(L);
+    afficher_liste(L);
 
-    printf("Création de l'Arbre de Huffman\n");
+    printf("Creation de l'Arbre Huffman\n");
     Arbre A = creer_Arbre_Huffman(L);
 
+    printf("Creation du Dictionnaire\n\n");
+    creation_Dictionnaire(A,"Dictionnaire.txt","dico_visuel.txt");
 
-    printf("Création du Dictionnaire\n");
-    creation_Dictionnaire(A,"Dictionnaire.txt");
-
+    //Lecture du fichier pour création dictionnaire pour le codage et arbre pour le décodage
     traduire_binaire_dico_Huffman("Dictionnaire.txt",dictionnaire,&arbre);
 
     printf("Codage du fichier source (%s) dans le fichier (%s)\n",fsource,fcode);
     codage_fichier(fsource,fcode,dictionnaire);
 
     int aux = nombre_caracteres(fcode);
-    printf("Le nombre de caracteres dans le fichier codé (%s) est : %d\nGain de codage : %f %%\n", fcode,aux,((float)aux/nbcartraduit)*100);
+    printf("Le nombre de caracteres dans le fichier code (%s) est : %d\nGain de codage : %f %%\n", fcode,aux,((float)aux/nbcartraduit)*100);
 
-    printf("Decodage du fichier (%s) dans (%s)\n",fcode,fdecode);
+    printf("Decodage du fichier (%s) dans (%s)\n\n",fcode,fdecode);
     decodage_fichier(fcode,fdecode,arbre);
+
+    Liberer_Arbre(arbre);
+    
+    Liberer_dictionnaire(dictionnaire);
+
+    fin = clock();
+    duree = (double)(fin - debut) / CLOCKS_PER_SEC;
+    printf( "L'execution met %f secondes\n", duree );
 
     return 0;
 }
