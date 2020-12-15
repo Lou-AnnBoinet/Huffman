@@ -1,3 +1,6 @@
+#include<stdlib.h>
+#include<stdio.h>
+#include"fonctions.h"
 
 void convertir_binaire(char caractere, char* conteneur)
 {
